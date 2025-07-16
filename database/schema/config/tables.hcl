@@ -29,8 +29,9 @@ table "dispatcher" {
   }
 
   foreign_key "fk_broker" {
-    columns = [broker_id]
+    columns = [column.broker_id]
 
+    ref_columns = [tabla.]
     references {
       schema  = schema.company
       table   = broker_info
