@@ -1,0 +1,68 @@
+@startuml
+
+entity User {
+  + id: UUID
+  + name: String
+  + email: String
+  + password: String
+  + auto_complaint: Boolean
+}
+
+entity EmailAddress {
+  + id: UUID
+  + user_id: UUID
+  + email: String
+  + smtp_settings: String
+}
+
+entity Email {
+  + id: UUID
+  + user_id: UUID
+  + from_address: String
+  + subject: String
+  + received_date: Date
+  + erasure_request_date: Date
+  + is_erasure_requested: Boolean
+}
+
+entity ErasureRequest {
+  + id: UUID
+  + email_id: UUID
+  + user_id: UUID
+  + company_id: UUID
+  + request_date: Date
+  + response_received: Boolean
+  + response_date: Date
+}
+
+entity Complaint {
+  + id: UUID
+  + user_id: UUID
+  + company_id: UUID
+  + request_id: UUID
+  + complaint_date: Date
+  + status: String
+}
+
+entity Company {
+  + id: UUID
+  + name: String
+  + email: String
+  + forgetfulness_score: Integer
+}
+
+entity EmailForwarding {
+  + id: UUID
+  + user_id: UUID
+  + custom_address: String
+}
+
+User ||--o{ EmailAddress : owns
+User ||--o{ Email : receives
+User ||--o{ ErasureRequest : initiates
+User ||--o{ Complaint : files
+User ||--o{ EmailForwarding : creates
+Email ||--o{ ErasureRequest : initiates
+Company ||--o{ ErasureRequest : receives
+Company ||--o{ Complaint : gets
+@enduml
