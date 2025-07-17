@@ -1,0 +1,1 @@
+schema "vtigercrm_2022" {}

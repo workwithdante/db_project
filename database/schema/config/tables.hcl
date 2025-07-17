@@ -1,6 +1,3 @@
-schema "config" {}
-schema "schema" {}
-
 table "dispatcher" {
   schema = schema.config
   column "id" {
@@ -25,25 +22,22 @@ table "dispatcher" {
   }
 
   unique unique_company_broker {
-    columns = [company, broker_id]          # IDENTIFICADORES desnudos
+    columns = [column.company, column.broker_id]          # IDENTIFICADORES desnudos
   }
 
   foreign_key "fk_broker" {
     columns = [column.broker_id]
 
-    ref_columns = [tabla.]
-    references {
-      schema  = schema.company
-      table   = broker_info
-      columns = [id]
-    }
+    ref_columns = [table.broker_info.column.id]
 
-    on_update = cascade                    # bareword, sin comillas
-    on_delete = restrict                   # bareword, sin comillas
+    on_update = CASCADE                    # bareword, sin comillas
+    on_delete = RESTRICT                   # bareword, sin comillas
   }
 }
 
 table "fields" {
+  schema = schema.config
+
   column "id" {
     type = serial
     null = false
@@ -59,15 +53,17 @@ table "fields" {
   }
 
   primary_key {
-    columns = [id]
+    columns = [column.id]
   }
 
   unique fields_field_name_key {
-    columns = [field_name]
+    columns = [column.field_name]
   }
 }
 
 table "input_field" {
+  schema = schema.config
+
   column "dispatcher_id" {
     type = int
     null = false
@@ -82,31 +78,26 @@ table "input_field" {
   }
 
   primary_key {
-    columns = [dispatcher_id, field_id]
+    columns = [column.dispatcher_id, column.field_id]
   }
 
   foreign_key input_field_dispatcher_id_fkey {
-    columns = [dispatcher_id]
-    references {
-      schema  = config
-      table   = dispatcher
-      columns = [id]
-    }
-    on_delete = cascade
+    columns = [column.dispatcher_id]
+    ref_columns = [table.dispatcher.column.id]
+    on_delete = CASCADE
   }
 
   foreign_key input_field_field_id_fkey {
-    columns = [field_id]
-    references {
-      schema  = config
-      table   = fields
-      columns = [id]
-    }
-    on_delete = cascade
+    columns = [column.field_id]
+
+    ref_columns = [table.fields.column.id]
+    on_delete = CASCADE
   }
 }
 
 table "rules" {
+  schema = schema.config
+
   column "rule_fn" {
     type = regprocedure
     null = false
@@ -121,10 +112,10 @@ table "rules" {
   }
 
   primary_key {
-    columns = [rule_fn]
+    columns = [column.rule_fn]
   }
 
   unique rules_result_label_key {
-    columns = [result_label]
+    columns = [column.result_label]
   }
 }

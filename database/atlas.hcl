@@ -1,17 +1,21 @@
-env "development" {
-  url = "postgres://postgres:XXXXXX@postgresql.mabecenter.org:5432/demo"
+variable "schemas" {
+  type = list(string)
+  default = [
+    "file://schema/config",
+    "file://schema/company",
+    "file://schema/vtigercrm_2022",
+    "file://schema/aetna",
+    "file://schema/molina",
+    "file://schema/oscar",
+    "file://schema/ambetter"
+  ]
+}
+
+env "dev" {
+  url = "postgres://postgres:Nunc40lv1d4r@postgresql.mabecenter.org:5432/demo"
 
   schema {
-    src = concat(
-      fileset("schemas/aetna/**/*.hcl"),
-      fileset("schemas/ambetter/**/*.hcl"),
-      fileset("schemas/company/**/*.hcl"),
-      fileset("schemas/config/**/*.hcl"),
-      fileset("schemas/molina/**/*.hcl"),
-      fileset("schemas/oscar/**/*.hcl"),
-      fileset("schemas/aetna/**/*.hcl"),
-      fileset("schemas/vtigercrm_2022/**/*.hcl")
-    )
+    src = var.schemas
   }
 
   migration {
