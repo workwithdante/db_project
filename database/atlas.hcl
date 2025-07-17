@@ -19,7 +19,7 @@ variable "migrations" {
 }
 
 env "dev" {
-  url = "postgres://postgres:Nunc40lv1d4r@postgresql.mabecenter.org:5432/demo"
+  url = "postgres://postgres:postgres@postgresql.mabecenter.org:5432/demo"
 
   schema {
     src = var.schemas

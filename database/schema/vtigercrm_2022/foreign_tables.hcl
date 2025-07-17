@@ -1,9 +1,36 @@
+function "create_extension_mysql_fdw" {
+  schema = schema.vtigercrm_2022
+  lang   = SQL
+  return = sql("null")
+  as = "CREATE EXTENSION IF NOT EXISTS mysql_fdw;"
+}
+
+event_trigger "create_extension_fdw" {
+  on      = ddl_command_start
+  tags    = ["CREATE EXTENSION"]
+  execute = function.create_extension_mysql_fdw
+}
+
+extension "mysql_fdw" {
+
+  schema  = schema.vtigercrm_2022
+}
+
+server "mariadb_srv" {
+  fdw     = extension.mysql_fdw
+  options = {
+    host   = "postgres.mabecenter.org"
+    port   = "5432"
+    dbname = "postgres"
+  }
+}
+
 # ----------------------------------------
 # vtiger_contactdetails
 # ----------------------------------------
 foreign_table "vtiger_contactdetails" {
   schema = schema.vtigercrm_2022
-  server = "mariadb_srv"
+  server = server.mariadb_srv
 
   column "contactid" {
     type = sql("BIGINT")
