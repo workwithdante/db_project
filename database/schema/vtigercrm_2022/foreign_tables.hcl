@@ -1,14 +1,3 @@
-extension "mysql_fdw" {
-  schema  = schema.vtigercrm_2022
-}
-
-server "mariadb_srv" {
-  fdw     = extension.mysql_fdw
-  options = {
-    host   = "postgres.mabecenter.org"
-    port   = "5432"
-  }
-}
 # ----------------------------------------
 # vtiger_contactdetails
 # ----------------------------------------

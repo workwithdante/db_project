@@ -14,6 +14,8 @@ materialized "ticket_active_annual" {
     WHERE vt.status <> 'Closed'
     GROUP BY vt.contact_id;
   SQL
+
+  depends_on = [foreign_table.vtiger_ticketcf]
 }
 
 materialized "contact_active_annual" {
@@ -51,4 +53,7 @@ materialized "contact_active_annual" {
       *
     FROM ranked;
   SQL
+
+  depends_on = [ foreign_table.vtiger_ticketcf, materialized.ticket_active_annual ]
+
 }

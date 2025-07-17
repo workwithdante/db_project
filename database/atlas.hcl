@@ -3,12 +3,19 @@ variable "schemas" {
   default = [
     "file://schema/config",
     "file://schema/company",
+    "file://schema/company/status_type",
+    "file://schema/company/utils",
     "file://schema/vtigercrm_2022",
     "file://schema/aetna",
     "file://schema/molina",
     "file://schema/oscar",
     "file://schema/ambetter"
   ]
+}
+
+variable "migrations" {
+  type = string
+  default = "file://migrations"
 }
 
 env "dev" {
@@ -19,7 +26,7 @@ env "dev" {
   }
 
   migration {
-    dir = "migrations"
+    dir = var.migrations
   }
   
   format {
